@@ -33,10 +33,6 @@ namespace VendingMachine
                         dimesProvided = 1;
                         nickelsProvided = 1;
                     }
-                    else
-                    {
-                        nickelsProvided = 3;
-                    }
                 }
 
                 if (amountOwed >= .10M)
@@ -44,18 +40,6 @@ namespace VendingMachine
                     if (dimes == 1)
                     {
                         dimesProvided = 1;
-                    }
-                    else if (nickels == 2)
-                    {
-                        nickelsProvided = 2;
-                    }
-                }
-
-                if (amountOwed == .05M)
-                {
-                    if (nickels == 1)
-                    {
-                        nickelsProvided = 1;
                     }
                 }
             }
