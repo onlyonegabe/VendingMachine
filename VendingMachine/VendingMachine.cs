@@ -31,26 +31,7 @@ namespace VendingMachine
             {
                 nickelsToGiveCustomer = nickelsNeeded;
             }
-            else
-            {
-                if (amountOwed >= .15M)
-                {
-                    if (dimes > 1)
-                    {
-                        dimesProvided = 1;
-                        nickelsToGiveCustomer = 1;
-                    }
-                }
-
-                if (amountOwed >= .10M)
-                {
-                    if (dimes == 1)
-                    {
-                        dimesProvided = 1;
-                    }
-                }
-            }
-
+            
             if (nickelsToGiveCustomer > 0 || dimesProvided > 0 || quartersToGiveCustomer > 0)
             {
                 return
