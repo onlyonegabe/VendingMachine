@@ -15,14 +15,21 @@ namespace VendingMachine
 
         public string GiveChange(decimal amountOwed)
         {
-            int nickelsProvided = 0;
+            int nickelsToGiveCustomer = 0;
             int dimesProvided = 0;
+            int quartersToGiveCustomer = 0;
 
-            // find the nickels needed to make change
-            int nickelsNeeded = (int) (amountOwed / .05M);
-            if (nickels >= nickelsNeeded)
+            const decimal quarterValue = .25M;
+            int quartersNeeded = GetCoinsNeededToMakeChange(amountOwed, quarterValue);
+            if (AreThereEnoughCoins(quarters, quartersNeeded))
             {
-                nickelsProvided = nickelsNeeded;
+                quartersToGiveCustomer = quartersNeeded;
+            }
+            const decimal nickelValue = .05M;
+            int nickelsNeeded = GetCoinsNeededToMakeChange(amountOwed, nickelValue);
+            if (AreThereEnoughCoins(nickels, nickelsNeeded))
+            {
+                nickelsToGiveCustomer = nickelsNeeded;
             }
             else
             {
@@ -31,7 +38,7 @@ namespace VendingMachine
                     if (dimes > 1)
                     {
                         dimesProvided = 1;
-                        nickelsProvided = 1;
+                        nickelsToGiveCustomer = 1;
                     }
                 }
 
@@ -44,12 +51,27 @@ namespace VendingMachine
                 }
             }
 
-            if (nickelsProvided > 0 || dimesProvided > 0)
+            if (nickelsToGiveCustomer > 0 || dimesProvided > 0 || quartersToGiveCustomer > 0)
             {
                 return
-                    $"Change is {nickelsProvided} nickel(s), {dimesProvided} dime(s), 0 quarter(s).";
+                    $"Change is {nickelsToGiveCustomer} nickel(s), {dimesProvided} dime(s), {quartersToGiveCustomer} quarter(s).";
             }
             return "Unable to give change.";
+        }
+
+        private bool AreThereEnoughCoins(int coinsInInventory, int coinsNeeded)
+        {
+            return coinsInInventory >= coinsNeeded;
+        }
+
+        private bool AreThereEnoughNickels(int nickelsNeeded)
+        {
+            return nickels >= nickelsNeeded;
+        }
+
+        private static int GetCoinsNeededToMakeChange(decimal amountOwed, decimal coinAmountToDivideBy)
+        {
+            return (int) (amountOwed / coinAmountToDivideBy);
         }
     }
 }
