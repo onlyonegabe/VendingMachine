@@ -15,6 +15,7 @@ namespace VendingMachine
 
         public string GiveChange(decimal amountOwed)
         {
+<<<<<<< HEAD
             int nickelsInChange = 0;
             int dimesInChange = 0;
 
@@ -25,6 +26,23 @@ namespace VendingMachine
             {
                 return
                     $"Change is {nickelsInChange} nickel(s), {dimesInChange} dime(s), 0 quarter(s).";
+=======
+            int nickelsToGiveCustomer = 0;
+            int dimesProvided = 0;
+            int quartersToGiveCustomer = 0;
+
+            const decimal quarterValue = .25M;
+            int quartersNeeded = GetCoinsNeededToMakeChange(amountOwed, quarterValue);
+            if (AreThereEnoughCoins(quarters, quartersNeeded))
+            {
+                quartersToGiveCustomer = quartersNeeded;
+            }
+            const decimal nickelValue = .05M;
+            int nickelsNeeded = GetCoinsNeededToMakeChange(amountOwed, nickelValue);
+            if (AreThereEnoughCoins(nickels, nickelsNeeded))
+            {
+                nickelsToGiveCustomer = nickelsNeeded;
+>>>>>>> Gives change in quarters.  Some refactoring.
             }
             return "Unable to give change.";
         }
@@ -38,7 +56,15 @@ namespace VendingMachine
             {
                 if (dimes >= coinsNeeded)
                 {
+<<<<<<< HEAD
                     coinsProvided = coinsNeeded;
+=======
+                    if (dimes > 1)
+                    {
+                        dimesProvided = 1;
+                        nickelsToGiveCustomer = 1;
+                    }
+>>>>>>> Gives change in quarters.  Some refactoring.
                 }
             }
             if (coinValue == NickelValue)
@@ -49,7 +75,31 @@ namespace VendingMachine
                 }
             }
 
+<<<<<<< HEAD
             return coinsProvided;
+=======
+            if (nickelsToGiveCustomer > 0 || dimesProvided > 0 || quartersToGiveCustomer > 0)
+            {
+                return
+                    $"Change is {nickelsToGiveCustomer} nickel(s), {dimesProvided} dime(s), {quartersToGiveCustomer} quarter(s).";
+            }
+            return "Unable to give change.";
+>>>>>>> Gives change in quarters.  Some refactoring.
+        }
+
+        private bool AreThereEnoughCoins(int coinsInInventory, int coinsNeeded)
+        {
+            return coinsInInventory >= coinsNeeded;
+        }
+
+        private bool AreThereEnoughNickels(int nickelsNeeded)
+        {
+            return nickels >= nickelsNeeded;
+        }
+
+        private static int GetCoinsNeededToMakeChange(decimal amountOwed, decimal coinAmountToDivideBy)
+        {
+            return (int) (amountOwed / coinAmountToDivideBy);
         }
     }
 }
