@@ -2,22 +2,26 @@ namespace VendingMachine
 {
     public class VendingMachine
     {
-        private int nickels;
-        private int dimes;
-        private int quarters;
+        private const decimal QuarterValue = .25M;
+        private const decimal DimeValue = .10M;
+        private const decimal NickelValue = .05M;
 
-        public VendingMachine(int nickels, int dimes, int quarters)
+        private int nickelsInInventory;
+        private int dimesInInventory;
+        private int quartersInInventory;
+
+        public VendingMachine(int nickelsInInventory, int dimesInInventory, int quartersInInventory)
         {
-            this.nickels = nickels;
-            this.dimes = dimes;
-            this.quarters = quarters;
+            this.nickelsInInventory = nickelsInInventory;
+            this.dimesInInventory = dimesInInventory;
+            this.quartersInInventory = quartersInInventory;
         }
 
         public string GiveChange(decimal amountOwed)
         {
-            int quartersToGiveCustomer = CalculateQuartersInChangeToGiveCustomer(amountOwed);
-            int dimesToGiveCustomer = CalculateDimesInChangeToGiveCustomer(amountOwed);
-            int nickelsToGiveCustomer = CalculateNickelsInChangeToGiveCustomer(amountOwed);
+            int quartersToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(amountOwed, QuarterValue, quartersInInventory);
+            int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(amountOwed, DimeValue, dimesInInventory);
+            int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(amountOwed, NickelValue, nickelsInInventory);
 
             if (nickelsToGiveCustomer > 0 || dimesToGiveCustomer > 0 || quartersToGiveCustomer > 0)
             {
@@ -27,40 +31,15 @@ namespace VendingMachine
             return "Unable to give change.";
         }
 
-        private int CalculateQuartersInChangeToGiveCustomer(decimal amountOwed)
+        private int CalculateCoinsInChangeToGiveCustomer(decimal amountOwed, decimal coinValue, int coins)
         {
-            int quartersToGiveCustomer = 0;
-            const decimal quarterValue = .25M;
-            int quartersNeeded = GetCoinsNeededToMakeChange(amountOwed, quarterValue);
-            if (AreThereEnoughCoins(quarters, quartersNeeded))
+            int coinsToGiveCustomer = 0;
+            int coinsNeeded = GetCoinsNeededToMakeChange(amountOwed, coinValue);
+            if (AreThereEnoughCoins(coins, coinsNeeded))
             {
-                quartersToGiveCustomer = quartersNeeded;
+                coinsToGiveCustomer = coinsNeeded;
             }
-            return quartersToGiveCustomer;
-        }
-
-        private int CalculateDimesInChangeToGiveCustomer(decimal amountOwed)
-        {
-            int dimesToGiveCustomer = 0;
-            const decimal dimeValue = .10M;
-            int dimesNeeded = GetCoinsNeededToMakeChange(amountOwed, dimeValue);
-            if (AreThereEnoughCoins(dimes, dimesNeeded))
-            {
-                dimesToGiveCustomer = dimesNeeded;
-            }
-            return dimesToGiveCustomer;
-        }
-
-        private int CalculateNickelsInChangeToGiveCustomer(decimal amountOwed)
-        {
-            int nickelsToGiveCustomer = 0;
-            const decimal nickelValue = .05M;
-            int nickelsNeeded = GetCoinsNeededToMakeChange(amountOwed, nickelValue);
-            if (AreThereEnoughCoins(nickels, nickelsNeeded))
-            {
-                nickelsToGiveCustomer = nickelsNeeded;
-            }
-            return nickelsToGiveCustomer;
+            return coinsToGiveCustomer;
         }
 
         private bool AreThereEnoughCoins(int coinsInInventory, int coinsNeeded)
