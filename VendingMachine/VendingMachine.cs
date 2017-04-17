@@ -6,9 +6,10 @@ namespace VendingMachine
         private const decimal DimeValue = .10M;
         private const decimal NickelValue = .05M;
 
-        private int nickelsInInventory;
-        private int dimesInInventory;
-        private int quartersInInventory;
+        private readonly int nickelsInInventory;
+        private readonly int dimesInInventory;
+        private readonly int quartersInInventory;
+        private decimal amountOwed;
 
         public VendingMachine(int nickelsInInventory, int dimesInInventory, int quartersInInventory)
         {
@@ -19,9 +20,10 @@ namespace VendingMachine
 
         public string GiveChange(decimal amountOwed)
         {
-            int quartersToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(amountOwed, QuarterValue, quartersInInventory);
-            int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(amountOwed, DimeValue, dimesInInventory);
-            int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(amountOwed, NickelValue, nickelsInInventory);
+            this.amountOwed = amountOwed;
+            int quartersToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(QuarterValue, quartersInInventory);
+            int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(DimeValue, dimesInInventory);
+            int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(NickelValue, nickelsInInventory);
 
             if (nickelsToGiveCustomer > 0 || dimesToGiveCustomer > 0 || quartersToGiveCustomer > 0)
             {
@@ -31,10 +33,10 @@ namespace VendingMachine
             return "Unable to give change.";
         }
 
-        private int CalculateCoinsInChangeToGiveCustomer(decimal amountOwed, decimal coinValue, int coins)
+        private int CalculateCoinsInChangeToGiveCustomer(decimal coinValue, int coins)
         {
             int coinsToGiveCustomer = 0;
-            int coinsNeeded = GetCoinsNeededToMakeChange(amountOwed, coinValue);
+            int coinsNeeded = GetCoinsNeededToMakeChange(coinValue);
             if (AreThereEnoughCoins(coins, coinsNeeded))
             {
                 coinsToGiveCustomer = coinsNeeded;
@@ -47,7 +49,7 @@ namespace VendingMachine
             return coinsInInventory >= coinsNeeded;
         }
 
-        private static int GetCoinsNeededToMakeChange(decimal amountOwed, decimal coinAmountToDivideBy)
+        private int GetCoinsNeededToMakeChange(decimal coinAmountToDivideBy)
         {
             return (int) (amountOwed / coinAmountToDivideBy);
         }
