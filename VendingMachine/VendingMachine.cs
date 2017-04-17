@@ -45,11 +45,6 @@ namespace VendingMachine
             return coinsInInventory >= coinsNeeded;
         }
 
-        private bool AreThereEnoughNickels(int nickelsNeeded)
-        {
-            return nickels >= nickelsNeeded;
-        }
-
         private static int GetCoinsNeededToMakeChange(decimal amountOwed, decimal coinAmountToDivideBy)
         {
             return (int) (amountOwed / coinAmountToDivideBy);
