@@ -9,6 +9,7 @@ namespace VendingMachine
         private readonly int nickelsInInventory;
         private readonly int dimesInInventory;
         private readonly int quartersInInventory;
+
         private decimal amountOwed;
 
         public VendingMachine(int nickelsInInventory, int dimesInInventory, int quartersInInventory)
@@ -33,15 +34,15 @@ namespace VendingMachine
             return "Unable to give change.";
         }
 
-        private int CalculateCoinsInChangeToGiveCustomer(decimal coinValue, int coins)
+        private int CalculateCoinsInChangeToGiveCustomer(decimal coinValue, int coinsInInventory)
         {
-            int coinsToGiveCustomer = 0;
-            int coinsNeeded = GetCoinsNeededToMakeChange(coinValue);
-            if (AreThereEnoughCoins(coins, coinsNeeded))
+            int coinsNeededToMakeChange = GetCoinsNeededToMakeChange(coinValue);
+            if (AreThereEnoughCoins(coinsInInventory, coinsNeededToMakeChange))
             {
-                coinsToGiveCustomer = coinsNeeded;
+                amountOwed -= coinsNeededToMakeChange * coinValue;
+                return coinsNeededToMakeChange;
             }
-            return coinsToGiveCustomer;
+            return 0;
         }
 
         private bool AreThereEnoughCoins(int coinsInInventory, int coinsNeeded)
