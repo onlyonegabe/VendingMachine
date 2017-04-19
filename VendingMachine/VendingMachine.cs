@@ -26,7 +26,7 @@ namespace VendingMachine
             int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(DimeValue, dimesInInventory);
             int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(NickelValue, nickelsInInventory);
 
-            if (nickelsToGiveCustomer > 0 || dimesToGiveCustomer > 0 || quartersToGiveCustomer > 0)
+            if (this.amountOwed == 0.00M)
             {
                 return
                     $"Change is {nickelsToGiveCustomer} nickel(s), {dimesToGiveCustomer} dime(s), {quartersToGiveCustomer} quarter(s).";
