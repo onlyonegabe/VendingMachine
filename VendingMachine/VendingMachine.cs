@@ -6,10 +6,9 @@ namespace VendingMachine
         private const decimal DimeValue = .10M;
         private const decimal NickelValue = .05M;
 
-        private readonly int nickelsInInventory;
-        private readonly int dimesInInventory;
-        private readonly int quartersInInventory;
-
+        private int nickelsInInventory;
+        private int dimesInInventory;
+        private int quartersInInventory;
         private decimal amountOwed;
 
         public VendingMachine(int nickelsInInventory, int dimesInInventory, int quartersInInventory)
@@ -26,18 +25,27 @@ namespace VendingMachine
                 return "No need to give change.";
             }
             amountOwed = amount;
-            int quartersToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(QuarterValue, quartersInInventory);
-            int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(DimeValue, dimesInInventory);
-            int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(NickelValue, nickelsInInventory);
+            int quartersToGiveCustomer = CalculateCoinsToGiveCustomer(QuarterValue, quartersInInventory);
+            int dimesToGiveCustomer = CalculateCoinsToGiveCustomer(DimeValue, dimesInInventory);
+            int nickelsToGiveCustomer = CalculateCoinsToGiveCustomer(NickelValue, nickelsInInventory);
             if (amountOwed == 0.00M)
             {
+                UpdateInventory(nickelsToGiveCustomer, dimesToGiveCustomer, quartersToGiveCustomer);
                 return
                     $"Change is {nickelsToGiveCustomer} nickel(s), {dimesToGiveCustomer} dime(s), {quartersToGiveCustomer} quarter(s).";
             }
             return "Unable to give change.";
         }
 
-        private int CalculateCoinsInChangeToGiveCustomer(decimal coinValue, int coinsInInventory)
+        private void UpdateInventory(int nickelsToGiveCustomer, int dimesToGiveCustomer, int quartersToGiveCustomer)
+        {
+            nickelsInInventory -= nickelsToGiveCustomer;
+            dimesInInventory -= dimesToGiveCustomer;
+            quartersInInventory -= quartersToGiveCustomer;
+        }
+
+        // This is doing two things
+        private int CalculateCoinsToGiveCustomer(decimal coinValue, int coinsInInventory)
         {
             int coinsNeededToMakeChange = GetCoinsNeededToMakeChange(coinValue);
             if (AreThereEnoughCoinsInInventory(coinsInInventory, coinsNeededToMakeChange))
