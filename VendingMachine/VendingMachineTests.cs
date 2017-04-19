@@ -4,6 +4,7 @@ namespace VendingMachine
 {
     public class VendingMachineTests
     {
+        [TestCase(0.20, 2, 1, 0, "Change is 2 nickel(s), 1 dime(s), 0 quarter(s).")]
         [TestCase(0.60, 0, 1, 2, "Change is 0 nickel(s), 1 dime(s), 2 quarter(s).")]
         [TestCase(0.75, 0, 0, 3, "Change is 0 nickel(s), 0 dime(s), 3 quarter(s).")]
         [TestCase(0.30, 0, 3, 0, "Change is 0 nickel(s), 3 dime(s), 0 quarter(s).")]

@@ -37,15 +37,25 @@ namespace VendingMachine
         private int CalculateCoinsInChangeToGiveCustomer(decimal coinValue, int coinsInInventory)
         {
             int coinsNeededToMakeChange = GetCoinsNeededToMakeChange(coinValue);
-            if (AreThereEnoughCoins(coinsInInventory, coinsNeededToMakeChange))
+            if (AreThereEnoughCoinsInInventory(coinsInInventory, coinsNeededToMakeChange))
             {
                 amountOwed -= coinsNeededToMakeChange * coinValue;
                 return coinsNeededToMakeChange;
             }
+            if (AreThereAnyCoinsInInventory(coinsInInventory))
+            {
+                amountOwed -= coinsInInventory * coinValue;
+                return coinsInInventory;
+            }
             return 0;
         }
 
-        private bool AreThereEnoughCoins(int coinsInInventory, int coinsNeeded)
+        private static bool AreThereAnyCoinsInInventory(int coinsInInventory)
+        {
+            return coinsInInventory > 0;
+        }
+
+        private bool AreThereEnoughCoinsInInventory(int coinsInInventory, int coinsNeeded)
         {
             return coinsInInventory >= coinsNeeded;
         }
