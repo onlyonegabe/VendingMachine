@@ -28,6 +28,7 @@ namespace VendingMachine
             int quartersToGiveCustomer = CalculateCoinsToGiveCustomer(QuarterValue, quartersInInventory);
             int dimesToGiveCustomer = CalculateCoinsToGiveCustomer(DimeValue, dimesInInventory);
             int nickelsToGiveCustomer = CalculateCoinsToGiveCustomer(NickelValue, nickelsInInventory);
+            UpdateAmountOwed(quartersToGiveCustomer, dimesToGiveCustomer, nickelsToGiveCustomer);
             if (amountOwed == 0.00M)
             {
                 UpdateInventory(nickelsToGiveCustomer, dimesToGiveCustomer, quartersToGiveCustomer);
@@ -37,6 +38,13 @@ namespace VendingMachine
             return "Unable to give change.";
         }
 
+        private void UpdateAmountOwed(int quartersToGiveCustomer, int dimesToGiveCustomer, int nickelsToGiveCustomer)
+        {
+            amountOwed -= quartersToGiveCustomer * QuarterValue;
+            amountOwed -= dimesToGiveCustomer * DimeValue;
+            amountOwed -= nickelsToGiveCustomer * NickelValue;
+        }
+
         private void UpdateInventory(int nickelsToGiveCustomer, int dimesToGiveCustomer, int quartersToGiveCustomer)
         {
             nickelsInInventory -= nickelsToGiveCustomer;
@@ -44,18 +52,15 @@ namespace VendingMachine
             quartersInInventory -= quartersToGiveCustomer;
         }
 
-        // This is doing two things
         private int CalculateCoinsToGiveCustomer(decimal coinValue, int coinsInInventory)
         {
             int coinsNeededToMakeChange = GetCoinsNeededToMakeChange(coinValue);
             if (AreThereEnoughCoinsInInventory(coinsInInventory, coinsNeededToMakeChange))
             {
-                amountOwed -= coinsNeededToMakeChange * coinValue;
                 return coinsNeededToMakeChange;
             }
             if (AreThereAnyCoinsInInventory(coinsInInventory))
             {
-                amountOwed -= coinsInInventory * coinValue;
                 return coinsInInventory;
             }
             return 0;
