@@ -21,11 +21,14 @@ namespace VendingMachine
 
         public string GiveChange(decimal amount)
         {
+            if (amount == 0.00M)
+            {
+                return "No need to give change.";
+            }
             amountOwed = amount;
             int quartersToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(QuarterValue, quartersInInventory);
             int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(DimeValue, dimesInInventory);
             int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(NickelValue, nickelsInInventory);
-
             if (amountOwed == 0.00M)
             {
                 return
