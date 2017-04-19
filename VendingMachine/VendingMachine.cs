@@ -19,14 +19,14 @@ namespace VendingMachine
             this.quartersInInventory = quartersInInventory;
         }
 
-        public string GiveChange(decimal amountOwed)
+        public string GiveChange(decimal amount)
         {
-            this.amountOwed = amountOwed;
+            amountOwed = amount;
             int quartersToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(QuarterValue, quartersInInventory);
             int dimesToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(DimeValue, dimesInInventory);
             int nickelsToGiveCustomer = CalculateCoinsInChangeToGiveCustomer(NickelValue, nickelsInInventory);
 
-            if (this.amountOwed == 0.00M)
+            if (amountOwed == 0.00M)
             {
                 return
                     $"Change is {nickelsToGiveCustomer} nickel(s), {dimesToGiveCustomer} dime(s), {quartersToGiveCustomer} quarter(s).";
